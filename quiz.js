@@ -72,9 +72,12 @@ function showMeme(imageName) {
 
     if (!imageName) return;
 
+    img.src = '';
+    requestAnimationFrame(() => {
     img.src = BASE + imageName;
     popup.classList.add('show');
-
+});
+    
     memeTimeout = setTimeout(() => {
         popup.classList.remove('show');
     }, 2500);

@@ -6,15 +6,15 @@ const BASE = 'https://ibr0kh1m.github.io/meme-project/';
 
 const failFiles = [
     { audio: 'faaah.mp3',                          image: 'fahh.png' },
-    { audio: 'cat-laugh-meme-1.mp3',               image: 'laugh-cat.png' },
-    { audio: 'spongebob-fail.mp3',                 image: 'sponge-bob.png' },
-    { audio: 'tuco-get-out.mp3',                   image: 'get-out.png' },
+    { audio: 'cat-laugh-meme-1.mp3',               image: 'laugh cat.png' },
+    { audio: 'spongebob-fail.mp3',                 image: 'sponge bob.png' },
+    { audio: 'tuco-get-out.mp3',                   image: 'get out.png' },
     { audio: 'oh-my-god-bro-oh-hell-nah-man.mp3',  image: 'lebron.png' },
     { audio: 'movie_1.mp3',                        image: null },
 ];
 
 const winFiles = [
-    { audio: 'oi-oi-oe-oi-a-eye-eye.mp3',          image: 'ue-ue.png' },
+    { audio: 'oi-oi-oe-oi-a-eye-eye.mp3',          image: 'ue ue.png' },
     { audio: 'mlg-airhorn.mp3',                    image: null },
     { audio: 'the-weeknd-rizzz.mp3',               image: 'rizzler.png' },
     { audio: 'yippeeeeeeeeeeeee.mp3',              image: 'yippee.png' },

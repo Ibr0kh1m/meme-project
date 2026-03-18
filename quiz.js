@@ -9,7 +9,7 @@ const failFiles = [
     { audio: 'cat-laugh-meme-1.mp3',               image: 'laugh cat.png' },
     { audio: 'spongebob-fail.mp3',                 image: 'sponge bob.png' },
     { audio: 'tuco-get-out.mp3',                   image: 'get out.png' },
-    { audio: 'oh-my-god-bro-oh-hell-nah-man.mp3',  image: 'lebron.png' },
+    { audio: 'oh-my-god-bro-oh-hell-nah-man.mp3',  image: 'lebron.jpg' },
     { audio: 'movie_1.mp3',                        image: null },
 ];
 

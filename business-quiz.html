@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Studies: Conceptual Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        :root {
+            --pastel-pink: #fff0f3;
+            --pastel-blue: #e0f2fe;
+            --pastel-lavender: #f3e8ff;
+            --accent-indigo: #818cf8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #fff1f2, #f0f9ff, #f5f3ff, #fafaf9);
+            background-size: 400% 400%;
+            animation: softGradient 20s ease infinite;
+        }
+
+        @keyframes softGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+        }
+
+        .fade-enter {
+            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .fade-exit {
+            animation: slideDownFade 0.4s ease-in forwards;
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes slideDownFade {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .option-btn {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateX(8px);
+            background: white;
+            border-color: var(--accent-indigo);
+        }
+
+        .progress-glow {
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
+        }
+
+        .stagger-0 { animation-delay: 0.1s; }
+        .stagger-1 { animation-delay: 0.2s; }
+        .stagger-2 { animation-delay: 0.3s; }
+        .stagger-3 { animation-delay: 0.4s; }
+
+        .btn-pulse {
+            animation: pulseSoft 2s infinite;
+        }
+
+        @keyframes pulseSoft {
+            0% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(129, 140, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0); }
+        }
+
+        /* ── SOCIAL CREDIT TOAST ── */
+        #social-credit-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            text-align: center;
+            transition: none;
+        }
+
+        #social-credit-toast.show {
+            animation: socialCreditPop 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes socialCreditPop {
+            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-5deg); }
+            15%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(2deg); }
+            25%  { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            70%  { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
+        }
+
+        .social-credit-inner {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            border: 4px solid #fbbf24;
+            border-radius: 16px;
+            padding: 20px 36px;
+            box-shadow: 0 0 60px rgba(22, 163, 74, 0.6), 0 0 120px rgba(22, 163, 74, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .social-credit-flag {
+            font-size: 2.5rem;
+            margin-bottom: 4px;
+        }
+
+        .social-credit-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: #fbbf24;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .social-credit-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+        }
+
+        .social-credit-sub {
+            font-size: 0.7rem;
+            color: #bbf7d0;
+            margin-top: 4px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── WRONG SHAKE ── */
+        .shake {
+            animation: wrongShake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes wrongShake {
+            10%, 90% { transform: translate3d(-3px, 0, 0); }
+            20%, 80% { transform: translate3d(6px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* ── WRONG SCREEN FLASH ── */
+        #wrong-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(239, 68, 68, 0.18);
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+        }
+
+        #wrong-flash.flash {
+            animation: wrongFlash 0.6s ease forwards;
+        }
+
+        @keyframes wrongFlash {
+            0%   { opacity: 0; }
+            20%  { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Social Credit Toast -->
+    <div id="social-credit-toast">
+        <div class="social-credit-inner">
+            <div class="social-credit-flag">🇨🇳</div>
+            <div class="social-credit-title">Social Credit</div>
+            <div class="social-credit-number">+1000</div>
+            <div class="social-credit-sub">CITIZEN APPROVED ✓</div>
+        </div>
+    </div>
+
+    <!-- Wrong Flash Overlay -->
+    <div id="wrong-flash"></div>
+
+    <div id="app" class="w-full max-w-4xl relative">
+        <div class="absolute -top-12 -left-12 w-48 h-48 bg-pink-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
+        <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
+
+        <div id="container" class="glass-card rounded-[2.5rem] p-8 md:p-12 transition-all duration-500">
+            
+            <!-- START SCREEN -->
+            <div id="screen-start" class="text-center fade-enter">
+                <span class="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-indigo-500 uppercase bg-indigo-50 rounded-full">
+                    Academic Evaluation
+                </span>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                    Business Studies <br><span class="text-indigo-400">Conceptual Mastery</span>
+                </h1>
+                <p class="text-gray-500 text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+                    A comprehensive assessment focused on management theory, organisational frameworks, and cross-cultural operations.
+                </p>
+                <button onclick="startQuiz()" class="btn-pulse bg-white border-2 border-indigo-100 hover:border-indigo-400 text-indigo-600 font-extrabold py-5 px-14 rounded-2xl text-xl transition-all hover:scale-105 shadow-xl">
+                    Begin Assessment
+                </button>
+            </div>
+
+            <!-- QUIZ SCREEN -->
+            <div id="screen-quiz" class="hidden">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold" id="counter-current">1</div>
+                        <div class="text-gray-400 font-medium uppercase tracking-wider text-xs">Question <br>Progress</div>
+                    </div>
+                    <div class="flex-1 w-full md:mx-10">
+                        <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-indigo-400 transition-all duration-700 ease-out progress-glow" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Total Score</div>
+                        <div class="text-2xl font-extrabold text-gray-900" id="counter-score">0</div>
+                    </div>
+                </div>
+
+                <div id="question-box" class="fade-enter">
+                    <h2 id="text-question" class="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-center leading-relaxed"></h2>
+                    <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <div id="control-next" class="mt-10 flex justify-center opacity-0 transform translate-y-4 transition-all duration-500 pointer-events-none">
+                    <button onclick="goToNextQuestion()" class="bg-indigo-600 text-white font-extrabold py-4 px-12 rounded-2xl text-lg hover:bg-indigo-700 transition-all shadow-lg flex items-center gap-3">
+                        Next Question
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULT SCREEN -->
+            <div id="screen-result" class="hidden text-center fade-enter">
+                <div class="mb-8 inline-block p-8 bg-indigo-50 rounded-full">
+                    <svg class="w-24 h-24 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                </div>
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-2">Assessment Finalised</h2>
+                <p class="text-gray-500 mb-10">Your conceptual understanding has been quantified.</p>
+                <div class="text-7xl font-black text-indigo-600 mb-10" id="final-score-val">0</div>
+                <p id="feedback-text" class="text-xl text-gray-700 mb-12 max-w-md mx-auto"></p>
+                <button onclick="location.reload()" class="bg-white border-2 border-gray-100 hover:border-indigo-400 text-gray-600 font-bold py-4 px-10 rounded-2xl transition-all">
+                    Restart Module
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════
+        //  AUDIO ENGINE  — preloaded, instant playback
+        // ═══════════════════════════════════════════════
+        const BASE = 'https://ibr0kh1m.github.io/meme-project/';
+
+        const failFiles = [
+            'faaah.mp3',
+            'cat-laugh-meme-1.mp3',
+            'spongebob-fail.mp3',
+            'tuco-get-out.mp3',
+            'oh-my-god-bro-oh-hell-nah-man.mp3',
+            'movie_1.mp3'
+        ];
+
+        const winFiles = [
+            'oi-oi-oe-oi-a-eye-eye.mp3',
+            'mlg-airhorn.mp3',
+            'the-weeknd-rizzz.mp3',
+            'yippeeeeeeeeeeeee.mp3',
+            'social-credit_751J4TV.mp3',
+            'social-credit-music.mp3'
+        ];
+
+        // Preload all sounds into AudioBuffers via Web Audio API
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const failBuffers = [];
+        const winBuffers = [];
+
+        async function loadBuffer(filename) {
+            try {
+                const res = await fetch(BASE + filename);
+                const arrayBuf = await res.arrayBuffer();
+                return await audioCtx.decodeAudioData(arrayBuf);
+            } catch(e) {
+                console.warn('Could not load', filename, e);
+                return null;
+            }
+        }
+
+        async function preloadAll() {
+            const [fails, wins] = await Promise.all([
+                Promise.all(failFiles.map(loadBuffer)),
+                Promise.all(winFiles.map(loadBuffer))
+            ]);
+            fails.forEach(b => b && failBuffers.push(b));
+            wins.forEach(b => b && winBuffers.push(b));
+            console.log('✅ All sounds preloaded!');
+        }
+
+        // Start preloading immediately
+        preloadAll();
+
+        function playBuffer(buffers) {
+            if (!buffers.length) return;
+            // Resume context if suspended (browser autoplay policy)
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const buf = buffers[Math.floor(Math.random() * buffers.length)];
+            const source = audioCtx.createBufferSource();
+            source.buffer = buf;
+            source.connect(audioCtx.destination);
+            source.start(0);
+        }
+
+        function playFail() { playBuffer(failBuffers); }
+        function playBell() { playBuffer(winBuffers); }
+
+        // ═══════════════════════════════════════════════
+        //  SOCIAL CREDIT TOAST
+        // ═══════════════════════════════════════════════
+        function showSocialCredit() {
+            const toast = document.getElementById('social-credit-toast');
+            toast.classList.remove('show');
+            void toast.offsetWidth; // reflow to restart animation
+            toast.classList.add('show');
+        }
+
+        // ═══════════════════════════════════════════════
+        //  QUIZ DATA
+        // ═══════════════════════════════════════════════
+        const quizData = [
+            { q: "What is the primary objective of the 'planning' function in management?", options: ["Supervising daily factory operations", "Setting objectives and developing success strategies", "Calculating annual tax liabilities", "Recruiting entry-level personnel"], a: 1 },
+            { q: "Which of the following defines the management task of 'organising'?", options: ["Classifying activities and dividing work into manageable tasks", "Issuing financial bonuses to senior staff", "Promoting products to global markets", "Managing public relations crises"], a: 0 },
+            { q: "Under which management category do the social skills of motivation and integration fall?", options: ["Accounting", "Strategy", "Integrating", "Procurement"], a: 2 },
+            { q: "In a professional context, what does 'measuring performance' entail?", options: ["Increasing staff compensation automatically", "Verifying if organisational targets are being met", "Separating office departments physically", "Terminating employment contracts"], a: 1 },
+            { q: "How is 'innovation' precisely defined within a corporate framework?", options: ["A period of financial decline", "The introduction of a new idea or method", "The existing hierarchy of command", "Standard administrative procedures"], a: 1 },
+            { q: "A specific plan formulated to achieve long-term success is termed a...", options: ["Strategy", "Subordinate", "Consultancy", "Dividend"], a: 0 },
+            { q: "Which term denotes an individual holding a position of lower rank within an organisation?", options: ["Director", "Consultant", "Executive", "Subordinate"], a: 3 },
+            { q: "What constitutes a corporate 'crisis'?", options: ["A trend of increasing profitability", "A situation of significant danger or instability", "A scheduled marketing initiative", "The appointment of a new auditor"], a: 1 },
+            { q: "The economic sector directly administered by the state is the...", options: ["Private sector", "Public sector", "Secondary sector", "Retail sector"], a: 1 },
+            { q: "What is the primary function of an external 'consultant'?", options: ["Governing daily operations indefinitely", "Providing specialised expert advice", "Managing the staff canteen", "Acquiring majority shareholdings"], a: 1 },
+            { q: "The 'allocation of resources' primarily involves managing which two elements?", options: ["Media and branding", "Logistics and shipping", "Personnel and capital", "Legal and compliance"], a: 2 },
+            { q: "Why is management often described as a social skill rather than a pure science?", options: ["It depends entirely on luck", "It involves complex human interactions and psychology", "It has no theoretical foundations", "It cannot be evaluated quantitatively"], a: 1 },
+            { q: "What does 'Theory X' assume regarding employee motivation?", options: ["Staff are naturally self-driven", "Personnel are inherently disinclined to work and require control", "Work is viewed as a source of fulfilment", "Autonomy is the most effective motivator"], a: 1 },
+            { q: "According to 'Theory Y', how do employees perceive their professional duties?", options: ["As a source of misery", "As a purely financial transaction", "As a psychological necessity and a source of satisfaction", "As a task to be avoided at all costs"], a: 2 },
+            { q: "How are workers typically managed in a Theory X environment?", options: ["Through total creative freedom", "Through coercion, control, and external incentives", "By eliminating all hierarchical layers", "Through flexible working arrangements"], a: 1 },
+            { q: "Theory Y is considered most appropriate for which category of staff?", options: ["Unskilled manual labour", "Knowledge workers and specialists", "Part-time seasonal staff", "Standardised assembly line workers"], a: 1 },
+            { q: "In the context of human needs, what are 'physiological' requirements?", options: ["Desires for prestige", "Basic survival needs such as food and shelter", "The need for physical safety", "The pursuit of artistic growth"], a: 1 },
+            { q: "The requirement for status and professional recognition is classified as...", options: ["Self-actualisation", "Safety needs", "Physiological needs", "Esteem needs"], a: 3 },
+            { q: "The concept of 'self-actualisation' involves which of the following?", options: ["Securing a bank loan", "Realising one's full potential and personal growth", "Obtaining a fixed-term contract", "Building social relationships with peers"], a: 1 },
+            { q: "How is a 'hygiene factor' defined in motivational theory?", options: ["A factor that prevents dissatisfaction but does not motivate", "A primary driver of high performance", "A requirement for clinical cleanliness", "The ultimate level of human satisfaction"], a: 0 },
+            { q: "Which of these is identified as a 'true motivator' rather than a hygiene factor?", options: ["Challenging and meaningful work", "Statutory sick pay", "Adequate office lighting", "A secure employment contract"], a: 0 },
+            { q: "Financial security and pension provisions are categorised as...", options: ["Core motivators", "Hygiene factors", "Aspirational needs", "Redundant variables"], a: 1 },
+            { q: "What is the strategic objective of 'job rotation'?", options: ["To reduce labour costs", "To relocate staff to different cities", "To vary tasks and mitigate employee boredom", "To remove the need for supervision"], a: 2 },
+            { q: "The collective beliefs and practices of an organisation are its...", options: ["Corporate culture", "Strategic mission", "Vertical command", "Operational hygiene"], a: 0 },
+            { q: "'Labour relations' focuses primarily on the interaction between...", options: ["Competing companies", "Management and the workforce", "A firm and its clientele", "The firm and its shareholders"], a: 1 },
+            { q: "Additional employment benefits beyond a basic salary are known as...", options: ["Wages", "Dividends", "Perks", "Provisions"], a: 2 },
+            { q: "What defines a 'hierarchy' or 'chain of command'?", options: ["A horizontal structure with no authority", "A system of authority with distinct vertical levels", "An external distribution network", "A temporary informal group"], a: 1 },
+            { q: "'Line authority' is defined as the power to...", options: ["Directly instruct subordinates in the hierarchy", "Disregard all company regulations", "Advise without the power to act", "Operate without a manager"], a: 0 },
+            { q: "To 'delegate' a responsibility means to...", options: ["Perform the task personally", "Assign the decision-making authority to another", "Formalise a resignation", "Ignore a professional obligation"], a: 1 },
+            { q: "An 'autonomous' worker is one who is...", options: ["Strictly supervised daily", "Dependent on management for every step", "Able to act and decide independently", "Limited to government projects"], a: 2 },
+            { q: "In organisational terms, a 'function' represents...", options: ["A specific area of expertise like Finance or HR", "An annual social gathering", "A decline in quarterly output", "An external contractor"], a: 0 },
+            { q: "What is a disadvantage of a functional organisational structure?", options: ["It employs too few people", "Departments may focus on their own goals over the company's", "It causes redundant management layers", "It is legally impossible to sustain"], a: 1 },
+            { q: "Why might a firm choose to 'flatten' its organisational structure?", options: ["To accelerate decision-making by removing middle management", "To increase central control", "To add more administrative overhead", "To decrease overall production speed"], a: 0 },
+            { q: "What is the primary trait of 'matrix management'?", options: ["Staff work exclusively in isolation", "No management exists", "Employees report to multiple superiors simultaneously", "Decisions are made by AI"], a: 2 },
+            { q: "A known complication of a matrix structure is...", options: ["Excessive simplicity", "Lack of any innovation", "Potential for conflicting priorities and complexity", "Absolute job stability"], a: 2 },
+            { q: "'Wikinomics' as a concept refers to...", options: ["Top-down authoritarianism", "Mass collaboration and open-source contribution", "Data secrecy", "The removal of digital tools"], a: 1 },
+            { q: "'Reporting to' a superior implies...", options: ["Being accountable to and taking direction from them", "Providing monthly updates only", "Being their direct manager", "Sharing the same office space"], a: 0 },
+            { q: "Which strategy involves using internal profits to fund growth?", options: ["Venture funding", "Self-financing", "Public debt", "Asset liquidation"], a: 1 },
+            { q: "'Glocalisation' is best described as...", options: ["Universal product standardisation", "Local-only commerce", "Adapting global products to specific local cultures", "Exiting international markets"], a: 2 },
+            { q: "How does a 'linear-active' culture typically approach work?", options: ["By improvising and disregarding schedules", "By focusing purely on relationships", "By avoiding eye contact", "By planning logically and focusing on one task at a time"], a: 3 },
+            { q: "A 'multi-active' culture places a high value on...", options: ["Emotions, relationships, and flexible timing", "Rigid punctuality", "Strict adherence to written contracts", "Silent observation only"], a: 0 },
+            { q: "'Reactive' cultures are characterised by which behaviour?", options: ["Frequent interruptions", "Careful listening and the avoidance of direct confrontation", "Aggressive public debating", "Disregard for seniority"], a: 1 },
+            { q: "A 'collectivist' society prioritises...", options: ["Individual glory", "Anarchic business models", "The welfare and harmony of the group", "Personal accumulation of wealth"], a: 2 },
+            { q: "The cultural concept of 'losing face' involves...", options: ["Making a clerical error", "Being publicly humiliated or shamed", "Changing career paths", "Losing a minor negotiation"], a: 1 },
+            { q: "'Universalists' fundamentally believe that...", options: ["Friendship overrides the law", "Rules and contracts must apply to everyone equally", "Hierarchy is the only rule", "Contracts are merely suggestions"], a: 1 },
+            { q: "'Particularists' typically believe that...", options: ["Global standards are always correct", "Logic is the only valid tool", "Time is a rigid line", "Specific relationships take precedence over abstract rules"], a: 3 },
+            { q: "To 'compromise' in a negotiation involves...", options: ["Refusing any movement", "Direct and hostile confrontation", "Modifying demands to reach a mutual agreement", "Delegating the outcome"], a: 2 },
+            { q: "'Intuition' in a business context refers to...", options: ["Data-driven forecasting", "Knowing something without conscious reasoning", "Strict adherence to manuals", "Polling subordinates"], a: 1 },
+            { q: "A 'confrontation' in a meeting is defined as...", options: ["A polite greeting", "A face-to-face disagreement", "A written memorandum", "A silent agreement"], a: 1 },
+            { q: "'Improvising' within an operational setting means...", options: ["Following a script", "Waiting for senior orders", "Acting without prior planning when necessary", "Archiving a process"], a: 2 }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+
+        const el = {
+            start: document.getElementById('screen-start'),
+            quiz: document.getElementById('screen-quiz'),
+            result: document.getElementById('screen-result'),
+            qText: document.getElementById('text-question'),
+            options: document.getElementById('options-grid'),
+            current: document.getElementById('counter-current'),
+            score: document.getElementById('counter-score'),
+            progress: document.getElementById('progress-bar'),
+            nextBtn: document.getElementById('control-next'),
+            finalScore: document.getElementById('final-score-val'),
+            feedback: document.getElementById('feedback-text'),
+            box: document.getElementById('question-box'),
+            wrongFlash: document.getElementById('wrong-flash')
+        };
+
+        function startQuiz() {
+            el.start.classList.add('fade-exit');
+            setTimeout(() => {
+                el.start.classList.add('hidden');
+                el.quiz.classList.remove('hidden');
+                loadQuestion();
+            }, 400);
+        }
+
+        function loadQuestion() {
+            const data = quizData[currentIndex];
+            el.qText.innerText = data.q;
+            el.options.innerHTML = '';
+            el.nextBtn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+
+            el.box.classList.remove('fade-enter');
+            void el.box.offsetWidth;
+            el.box.classList.add('fade-enter');
+
+            data.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn stagger-${i} w-full text-left p-5 rounded-2xl border-2 border-gray-100 bg-white/50 hover:bg-white text-gray-700 font-semibold shadow-sm flex items-center gap-4`;
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-400 flex items-center justify-center text-xs font-black flex-shrink-0">${String.fromCharCode(65 + i)}</div>
+                    <span>${opt}</span>
+                `;
+                btn.onclick = () => selectOption(i, btn);
+                el.options.appendChild(btn);
+            });
+
+            el.current.innerText = currentIndex + 1;
+            el.progress.style.width = `${(currentIndex / quizData.length) * 100}%`;
+        }
+
+        function selectOption(idx, btn) {
+            const data = quizData[currentIndex];
+            const allBtns = el.options.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (idx === data.a) {
+                // ✅ CORRECT
+                btn.classList.add('border-green-300', 'bg-green-50');
+                score++;
+                el.score.innerText = score;
+                playBell();
+                showSocialCredit();
+            } else {
+                // ❌ WRONG
+                btn.classList.add('border-red-200', 'bg-red-50');
+                allBtns[data.a].classList.add('border-green-300', 'bg-green-50');
+                playFail();
+
+                // Screen flash
+                el.wrongFlash.classList.remove('flash');
+                void el.wrongFlash.offsetWidth;
+                el.wrongFlash.classList.add('flash');
+
+                // Shake the wrong button
+                btn.classList.add('shake');
+                btn.addEventListener('animationend', () => btn.classList.remove('shake'), { once: true });
+            }
+
+            el.nextBtn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        }
+
+        function goToNextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                el.box.classList.add('fade-exit');
+                setTimeout(() => {
+                    currentIndex++;
+                    el.box.classList.remove('fade-exit');
+                    loadQuestion();
+                }, 400);
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            el.quiz.classList.add('fade-exit');
+            setTimeout(() => {
+                el.quiz.classList.add('hidden');
+                el.result.classList.remove('hidden');
+                el.finalScore.innerText = score;
+
+                const ratio = score / quizData.length;
+                if (ratio >= 0.9) el.feedback.innerText = "Exceptional performance. You have attained a comprehensive mastery of the theoretical syllabus.";
+                else if (ratio >= 0.7) el.feedback.innerText = "Substantial understanding demonstrated. Most core concepts have been correctly identified.";
+                else if (ratio >= 0.5) el.feedback.innerText = "Satisfactory grasp of terminology, though further review of cultural and structural models is recommended.";
+                else el.feedback.innerText = "Foundational review required to align with the professional requirements of the module.";
+            }, 400);
+        }
+    </script>
+</body>
+</html>
